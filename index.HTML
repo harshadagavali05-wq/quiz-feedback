@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Quizomania 2k26 - Feedback</title>
+
+<style>
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    url('Screenshot 2026-03-11 135241.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:0;
+    flex-direction:column;
+}
+
+@keyframes fadeInUp {
+    from{opacity:0; transform:translateY(30px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+@keyframes float {
+    0%{transform:translateY(0px);}
+    50%{transform:translateY(-10px);}
+    100%{transform:translateY(0px);}
+}
+
+.container{
+    background: rgba(255,255,255,0.9);
+    padding:35px;
+    width:380px;
+    border-radius:20px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.5);
+    text-align:center;
+    backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,0.3);
+
+    animation: fadeInUp 0.8s ease-out forwards, float 4s ease-in-out infinite;
+}
+
+h2{
+    color:#1a1a1a;
+    margin-bottom:5px;
+    font-size:26px;
+    text-transform:uppercase;
+}
+
+.sub-text{
+    color:#555;
+    font-size:14px;
+    margin-bottom:20px;
+}
+
+input,select,textarea{
+    width:90%;
+    padding:12px;
+    margin:10px 0;
+    border-radius:8px;
+    border:1px solid #ddd;
+    font-size:14px;
+}
+
+input:focus,select:focus,textarea:focus{
+    border-color:#667eea;
+    outline:none;
+    box-shadow:0 0 8px rgba(102,126,234,0.3);
+}
+
+button{
+    background:#764ba2;
+    color:white;
+    border:none;
+    padding:12px 25px;
+    font-size:16px;
+    font-weight:bold;
+    border-radius:8px;
+    cursor:pointer;
+    width:95%;
+}
+
+button:hover{
+    background:#667eea;
+}
+
+.admin-link{
+    margin-top:25px;
+    color:#fff;
+    text-decoration:none;
+    font-size:13px;
+    background:rgba(0,0,0,0.4);
+    padding:8px 20px;
+    border-radius:30px;
+}
+
+#message{
+    margin-top:15px;
+    color:#27ae60;
+    font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Quizomania 2k26</h2>
+<div class="sub-text">Challenge Your Mind !!</div>
+
+<input type="text" id="userName" placeholder="Your Name">
+
+<input type="text" id="dept" placeholder="Department">
+
+<select id="difficulty">
+<option value="">Quiz Difficulty</option>
+<option>Easy</option>
+<option>Medium</option>
+<option>Hard</option>
+</select>
+
+<textarea id="suggestion" rows="3" placeholder="Write your suggestion..."></textarea>
+
+<button onclick="submitFeedback()">Submit Feedback</button>
+
+<p id="message"></p>
+
+</div>
+
+<a href="admin.html" class="admin-link">Admin Dashboard →</a>
+
+
+<script>
+
+const scriptURL = "https://script.google.com/macros/s/AKfycby4Gt_Z_WS6EBG43CGqfBl4jYF64zG2X3OfqV4nbmoNAOHamYhPj5RFmybMKW-26krN/exec";
+
+function submitFeedback(){
+
+const name = document.getElementById("userName").value;
+const dept = document.getElementById("dept").value;
+const diff = document.getElementById("difficulty").value;
+const msg = document.getElementById("suggestion").value;
+
+if(!name || !dept){
+alert("Please fill in your name and department.");
+return;
+}
+
+const formData = new FormData();
+
+formData.append("name", name);
+formData.append("dept", dept);
+formData.append("diff", diff);
+formData.append("msg", msg);
+
+fetch(scriptURL,{
+method:"POST",
+body:formData
+})
+.then(response => {
+
+document.getElementById("message").innerHTML =
+"✅ Feedback Submitted! Thank you.";
+
+setTimeout(()=>{
+document.querySelectorAll("input, textarea, select")
+.forEach(el => el.value="");
+
+document.getElementById("message").innerHTML="";
+},3000);
+
+})
+.catch(error=>{
+document.getElementById("message").innerHTML =
+"❌ Error submitting feedback.";
+});
+
+}
+
+</script>
+
+</body>
+</html>
